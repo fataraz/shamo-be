@@ -1,8 +1,8 @@
 package helper
 
 import (
-	"errors"
 	"regexp"
+	"shamo-be/internal/shared/constant"
 )
 
 var emailRegex = regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
@@ -32,6 +32,6 @@ func ValidatePhoneNumber(phoneNumber string) (string, error) {
 		phoneNumber = phoneNumber[1:]
 		return phoneNumber, nil
 	} else {
-		return phoneNumber, errors.New("not valid phone number")
+		return phoneNumber, constant.ErrorInvalidPhoneNumber
 	}
 }

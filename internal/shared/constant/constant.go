@@ -19,15 +19,17 @@ var (
 )
 
 var (
-	ErrorGeneral          = NewError(http.StatusInternalServerError, ErrorGeneralMsg)
-	ErrorValidation       = NewError(http.StatusBadRequest, ErrorValidationMsg)
-	ErrorInvalidRequest   = NewError(http.StatusBadRequest, ErrorInvalidRequestMsg)
-	ErrorDataNotFound     = NewError(http.StatusNotFound, ErrorNotFoundMsg)
-	ErrorInvalidEmail     = NewError(http.StatusBadRequest, ErrorInvalidEmailMsg)
-	ErrorUserCannotAccess = NewError(http.StatusUnauthorized, ErrorNotAuthorizedMsg)
-	ErrorDatabase         = NewError(http.StatusInternalServerError, "Database Error")
-	ErrorUserNotFound     = NewError(http.StatusNotFound, "User Not Found")
-	ErrorPasswordNotMatch = NewError(http.StatusUnauthorized, "Password not match")
+	ErrorGeneral            = NewError(http.StatusInternalServerError, ErrorGeneralMsg)
+	ErrorValidation         = NewError(http.StatusBadRequest, ErrorValidationMsg)
+	ErrorInvalidRequest     = NewError(http.StatusBadRequest, ErrorInvalidRequestMsg)
+	ErrorDataNotFound       = NewError(http.StatusNotFound, ErrorNotFoundMsg)
+	ErrorInvalidEmail       = NewError(http.StatusBadRequest, ErrorInvalidEmailMsg)
+	ErrorUserCannotAccess   = NewError(http.StatusUnauthorized, ErrorNotAuthorizedMsg)
+	ErrorDatabase           = NewError(http.StatusInternalServerError, "Database Error")
+	ErrorUserNotFound       = NewError(http.StatusNotFound, "User Not Found")
+	ErrorPasswordNotMatch   = NewError(http.StatusUnauthorized, "Password not match")
+	ErrorProductNotFound    = NewError(http.StatusNotFound, "Product Not Found")
+	ErrorInvalidPhoneNumber = NewError(http.StatusBadRequest, "Invalid Phone Number")
 )
 
 // NewError ...

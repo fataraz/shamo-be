@@ -1,9 +1,10 @@
 package auth
 
 import (
-	"errors"
 	usersDomain "shamo-be/internal/domain/users"
+	"shamo-be/internal/shared/constant"
 	"shamo-be/internal/shared/session"
+	ctxSess "shamo-be/internal/shared/utils/context"
 )
 
 // service ...
@@ -19,18 +20,22 @@ func New(userRepository usersDomain.Repository) Service {
 }
 
 // Login ...
-func (s *service) Login(req *LoginReq) (res *LoginRes, err error) {
+func (s *service) Login(ctxSess *ctxSess.Context, req *LoginReq) (res *LoginRes, err error) {
 	user, err := s.userRepository.FindByEmail(req.Email)
 	if err != nil {
-		return res, err
+		ctxSess.ErrorMessage = err.Error()
+		return
 	}
 	if user.ID == 0 {
-		return res, errors.New("user not found")
+		err = constant.ErrorUserNotFound
+		return
 	}
 
 	// check password
 	if err = s.checkPassword(req.Password, user.Password); err != nil {
-		return res, err
+		ctxSess.ErrorMessage = err.Error()
+		err = constant.ErrorPasswordNotMatch
+		return
 	}
 
 	tokenString, _ := session.NewBearerToken(&user)

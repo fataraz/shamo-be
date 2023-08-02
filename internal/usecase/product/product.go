@@ -27,6 +27,7 @@ func (s *service) FindProducts(ctxSess *ctxSess.Context) (resp []*ResponseProduc
 	if err != nil {
 		ctxSess.ErrorMessage = err.Error()
 		err = constant.ErrorDataNotFound
+		return
 	}
 	for _, v := range products {
 		product := &ResponseProduct{

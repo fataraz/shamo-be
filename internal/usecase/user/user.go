@@ -1,11 +1,12 @@
 package user
 
 import (
-	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	usersDomain "shamo-be/internal/domain/users"
+	"shamo-be/internal/shared/constant"
 	"shamo-be/internal/shared/helper"
+	ctxSess "shamo-be/internal/shared/utils/context"
 	"strings"
 	"time"
 )
@@ -24,20 +25,24 @@ func New(userRepo usersDomain.Repository) Service {
 }
 
 // RegisterUser ...
-func (s *service) RegisterUser(req *RegisterReq) (err error) {
+func (s *service) RegisterUser(ctxSess *ctxSess.Context, req *RegisterReq) (err error) {
 	// validation
 	if !helper.ValidateEmail(strings.ToLower(req.Email)) {
-		return errors.New("email is invalid")
+		ctxSess.ErrorMessage = constant.ErrorInvalidEmailMsg
+		err = constant.ErrorInvalidEmail
+		return
 	}
 	phone, err := helper.ValidatePhoneNumber(req.Phone)
 	if err != nil {
-		return err
+		ctxSess.ErrorMessage = err.Error()
+		return
 	}
 
 	// encrypt password
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.MinCost)
 	if err != nil {
-		return err
+		ctxSess.ErrorMessage = err.Error()
+		return
 	}
 	user := &usersDomain.User{
 		Name:      req.Name,
@@ -50,7 +55,8 @@ func (s *service) RegisterUser(req *RegisterReq) (err error) {
 		UpdatedAt: time.Now(),
 	}
 	if err = s.userRepo.Save(user); err != nil {
-		return err
+		ctxSess.ErrorMessage = err.Error()
+		return
 	}
 	return
 }
