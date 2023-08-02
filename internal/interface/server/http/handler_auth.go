@@ -35,7 +35,7 @@ func (a *authHandler) login(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, resp)
 	}
 
-	login, err := a.service.Login(req)
+	login, err := a.service.Login(ctxSess, req)
 	if err != nil {
 		ctxSess.Lv4()
 		errorMessage := map[string]any{"error": err.Error()}

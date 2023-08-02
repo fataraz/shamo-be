@@ -35,6 +35,7 @@ func New(logger Logger.Logger) *Context {
 		Header:      map[string]interface{}{},
 		Request:     struct{}{},
 	}
+
 }
 
 // SetXRequestID ...

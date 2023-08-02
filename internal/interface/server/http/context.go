@@ -7,17 +7,20 @@ import (
 	ctxSess "shamo-be/internal/shared/utils/context"
 )
 
+// AppContext ...
 type AppContext struct {
 	echo.Context
 	CtxSess *ctxSess.Context
 }
 
+// Parse ...
 func Parse(c echo.Context) *AppContext {
 	data := c.Get(ctxSess.AppSession)
 	ctxSess := data.(*ctxSess.Context)
 	return &AppContext{Context: c, CtxSess: ctxSess}
 }
 
+// Ok ...
 func (c *AppContext) Ok(resp interface{}) error {
 	var data interface{}
 	data = resp

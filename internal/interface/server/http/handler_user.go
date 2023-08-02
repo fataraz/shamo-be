@@ -39,7 +39,7 @@ func (u *userHandler) registerUser(c echo.Context) error {
 
 	ctxSess.Request = req
 	// create user account
-	if err := u.service.RegisterUser(req); err != nil {
+	if err := u.service.RegisterUser(ctxSess, req); err != nil {
 		ctxSess.Lv4()
 
 		errorMessage := map[string]any{"error": err.Error()}

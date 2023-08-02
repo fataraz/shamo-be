@@ -68,6 +68,7 @@ func (i *Interceptor) skipCheckSession(c echo.Context) bool {
 	return false
 }
 
+// checkSession ...
 func (i *Interceptor) checkSession(c echo.Context) bool {
 	data := c.Get(ctxSess.AppSession)
 	ctxSess := data.(*ctxSess.Context)
