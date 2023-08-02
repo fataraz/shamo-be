@@ -1,8 +1,8 @@
 package product
 
 import (
-	"fmt"
 	"log"
+	ctxSess "shamo-be/internal/shared/utils/context"
 
 	productsDomain "shamo-be/internal/domain/products"
 	"shamo-be/internal/shared/constant"
@@ -22,10 +22,11 @@ func New(productRepo productsDomain.Repository) Service {
 }
 
 // FindProducts ...
-func (s *service) FindProducts() (resp []*ResponseProduct, err error) {
+func (s *service) FindProducts(ctxSess *ctxSess.Context) (resp []*ResponseProduct, err error) {
 	products, err := s.productRepo.FindAll()
 	if err != nil {
-		err = fmt.Errorf("data not found")
+		ctxSess.ErrorMessage = err.Error()
+		err = constant.ErrorDataNotFound
 	}
 	for _, v := range products {
 		product := &ResponseProduct{

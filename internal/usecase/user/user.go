@@ -6,6 +6,7 @@ import (
 	"log"
 	usersDomain "shamo-be/internal/domain/users"
 	"shamo-be/internal/shared/helper"
+	"strings"
 	"time"
 )
 
@@ -25,7 +26,7 @@ func New(userRepo usersDomain.Repository) Service {
 // RegisterUser ...
 func (s *service) RegisterUser(req *RegisterReq) (err error) {
 	// validation
-	if !helper.ValidateEmail(req.Email) {
+	if !helper.ValidateEmail(strings.ToLower(req.Email)) {
 		return errors.New("email is invalid")
 	}
 	phone, err := helper.ValidatePhoneNumber(req.Phone)
@@ -40,7 +41,7 @@ func (s *service) RegisterUser(req *RegisterReq) (err error) {
 	}
 	user := &usersDomain.User{
 		Name:      req.Name,
-		Email:     req.Email,
+		Email:     strings.ToLower(req.Email),
 		Username:  req.Username,
 		Phone:     phone,
 		Roles:     "Role",

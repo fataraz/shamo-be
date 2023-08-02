@@ -29,7 +29,7 @@ func (p *productHandler) getProducts(c echo.Context) error {
 	context := Parse(c)
 	ctxSess := context.CtxSess
 
-	products, err := p.service.FindProducts()
+	products, err := p.service.FindProducts(ctxSess)
 	if err != nil {
 		ctxSess.Lv4()
 		resp := APIResponse("failed to get products", http.StatusBadRequest, "error", nil)
