@@ -3,14 +3,17 @@ package product
 import (
 	"fmt"
 	"log"
+
 	productsDomain "shamo-be/internal/domain/products"
 	"shamo-be/internal/shared/constant"
 )
 
+// service ...
 type service struct {
 	productRepo productsDomain.Repository
 }
 
+// New ...
 func New(productRepo productsDomain.Repository) Service {
 	if productRepo == nil {
 		log.Fatalf("please provide product db repository")
@@ -18,6 +21,7 @@ func New(productRepo productsDomain.Repository) Service {
 	return &service{productRepo: productRepo}
 }
 
+// FindProducts ...
 func (s *service) FindProducts() (resp []*ResponseProduct, err error) {
 	products, err := s.productRepo.FindAll()
 	if err != nil {

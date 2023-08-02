@@ -1,8 +1,10 @@
 package http
 
 import (
-	"github.com/labstack/echo/v4"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
+
 	"shamo-be/internal/usecase/product"
 )
 
@@ -24,12 +26,17 @@ func SetupProductHandler(service product.Service) *productHandler {
 
 // getProducts : get all items of products
 func (p *productHandler) getProducts(c echo.Context) error {
+	context := Parse(c)
+	ctxSess := context.CtxSess
+
 	products, err := p.service.FindProducts()
 	if err != nil {
-		errors := FormatValidationError(err)
-		response := APIResponse("failed to get products", http.StatusBadRequest, "error", errors)
-		c.JSON(http.StatusBadRequest, response)
+		ctxSess.Lv4()
+		resp := APIResponse("failed to get products", http.StatusBadRequest, "error", nil)
+		return c.JSON(http.StatusBadRequest, resp)
 	}
-	response := APIResponse("products", http.StatusOK, "success", products)
-	return c.JSON(http.StatusOK, response)
+	resp := APIResponse("products", http.StatusOK, "success", products)
+	ctxSess.Lv4(resp)
+
+	return c.JSON(http.StatusOK, resp)
 }

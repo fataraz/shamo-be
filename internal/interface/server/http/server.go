@@ -11,6 +11,7 @@ func StartHttpService(cont *container.Container) {
 	server := echo.New()
 	server.HideBanner = true
 
+	setupMiddleware(server)
 	SetupRouter(server, SetupHandler(cont))
 
 	// Start server http
