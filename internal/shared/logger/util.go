@@ -7,6 +7,7 @@ const (
 	sliceByteMask = "X@BQ1"
 )
 
+// ToField ...
 func ToField(key string, val interface{}) (field Field) {
 	field = Field{
 		Key: key,
@@ -91,6 +92,7 @@ func masking(data interface{}) interface{} {
 	return altered
 }
 
+// maskSlice ...
 func maskSlice(elem reflect.Value) (altered reflect.Value) {
 	altered = reflect.MakeSlice(elem.Type(), elem.Len(), elem.Len())
 	for i := 0; i < elem.Len(); i++ {
@@ -109,6 +111,7 @@ func maskSlice(elem reflect.Value) (altered reflect.Value) {
 	return
 }
 
+// maskMap ...
 func maskMap(elem reflect.Value) (altered reflect.Value) {
 	altered = reflect.MakeMapWithSize(elem.Type(), len(elem.MapKeys()))
 	mapRange := elem.MapRange()
@@ -130,6 +133,7 @@ func maskMap(elem reflect.Value) (altered reflect.Value) {
 	return
 }
 
+// isNil ...
 func isNil(elem reflect.Value) bool {
 	return elem.Interface() == nil ||
 		(reflect.ValueOf(elem.Interface()).Kind() == reflect.Ptr && reflect.ValueOf(elem.Interface()).IsNil())

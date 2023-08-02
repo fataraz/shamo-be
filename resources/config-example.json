@@ -1,0 +1,20 @@
+{
+  "apps": {
+    "name": "",
+    "version": "",
+    "httpPort": 8080
+  },
+  "database": {
+    "db": {
+      "username": "",
+      "password": "",
+      "name": "",
+      "schema": "public",
+      "host": "localhost",
+      "port": 5432,
+      "minIdleConnections": 10,
+      "maxOpenConnections": 30,
+      "debugMode": false
+    }
+  }
+}

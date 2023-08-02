@@ -12,6 +12,7 @@ import (
 	"reflect"
 )
 
+// defaultLogger ...
 type defaultLogger struct {
 	// used by options
 	writers     []io.Writer
@@ -26,6 +27,7 @@ type defaultLogger struct {
 
 var _ Logger = (*defaultLogger)(nil)
 
+// newLogger ...
 func newLogger(opts ...Option) (Logger, error) {
 	defaultLogger := &defaultLogger{
 		writers:     make([]io.Writer, 0),
@@ -55,6 +57,7 @@ func newLogger(opts ...Option) (Logger, error) {
 	return defaultLogger, nil
 }
 
+// Close ...
 func (d *defaultLogger) Close() error {
 	if d.closer == nil {
 		return nil
@@ -74,6 +77,7 @@ func (d *defaultLogger) Close() error {
 	return err
 }
 
+// Debug ...
 func (d *defaultLogger) Debug(ctx context.Context, message string, fields ...Field) {
 	zapLogs := []zap.Field{
 		zap.String("logType", LogTypeSYS),
@@ -84,6 +88,7 @@ func (d *defaultLogger) Debug(ctx context.Context, message string, fields ...Fie
 	d.zapLogger.Debug(separator, zapLogs...)
 }
 
+// Info ...
 func (d *defaultLogger) Info(ctx context.Context, message string, fields ...Field) {
 	zapLogs := []zap.Field{
 		zap.String("logType", LogTypeSYS),
@@ -94,6 +99,7 @@ func (d *defaultLogger) Info(ctx context.Context, message string, fields ...Fiel
 	d.zapLogger.Info(separator, zapLogs...)
 }
 
+// Warn ...
 func (d *defaultLogger) Warn(ctx context.Context, message string, fields ...Field) {
 	zapLogs := []zap.Field{
 		zap.String("logType", LogTypeSYS),
@@ -104,6 +110,7 @@ func (d *defaultLogger) Warn(ctx context.Context, message string, fields ...Fiel
 	d.zapLogger.Warn(separator, zapLogs...)
 }
 
+// Error ...
 func (d *defaultLogger) Error(ctx context.Context, message string, fields ...Field) {
 	zapLogs := []zap.Field{
 		zap.String("logType", LogTypeSYS),
@@ -114,6 +121,7 @@ func (d *defaultLogger) Error(ctx context.Context, message string, fields ...Fie
 	d.zapLogger.Error(separator, zapLogs...)
 }
 
+// Fatal ...
 func (d *defaultLogger) Fatal(ctx context.Context, message string, fields ...Field) {
 	zapLogs := []zap.Field{
 		zap.String("logType", LogTypeSYS),
@@ -124,6 +132,7 @@ func (d *defaultLogger) Fatal(ctx context.Context, message string, fields ...Fie
 	d.zapLogger.Fatal(separator, zapLogs...)
 }
 
+// Panic ...
 func (d *defaultLogger) Panic(ctx context.Context, message string, fields ...Field) {
 	zapLogs := []zap.Field{
 		zap.String("logType", LogTypeSYS),
@@ -134,6 +143,7 @@ func (d *defaultLogger) Panic(ctx context.Context, message string, fields ...Fie
 	d.zapLogger.Panic(separator, zapLogs...)
 }
 
+// formatLogs ...
 func formatLogs(ctx context.Context, msg string, mask bool, fields ...Field) (logRecord []zap.Field) {
 	ctxVal := ExtractCtx(ctx)
 
@@ -174,6 +184,7 @@ func formatLogs(ctx context.Context, msg string, mask bool, fields ...Field) (lo
 	return
 }
 
+// formatLog ...
 func formatLog(key string, msg interface{}, mask bool) (logRecord zap.Field) {
 	if msg == nil {
 		logRecord = zap.Any(key, struct{}{})

@@ -6,6 +6,7 @@ import (
 	"sync"
 )
 
+// Logger ...
 type Logger interface {
 	Debug(ctx context.Context, message string, fields ...Field)
 	Info(ctx context.Context, message string, fields ...Field)
@@ -16,15 +17,18 @@ type Logger interface {
 	Close() error
 }
 
+// Field ...
 type Field struct {
 	Key string
 	Val interface{}
 }
 
+// ctxKeyLogger ...
 type ctxKeyLogger struct{}
 
 var ctxKey = ctxKeyLogger{}
 
+// Context ...
 type Context struct {
 	ServiceName    string `json:"_app_name"`
 	ServiceVersion string `json:"_app_version"`
@@ -46,6 +50,7 @@ type Context struct {
 var instance Logger
 var once sync.Once
 
+// GetLogger ...
 func GetLogger() Logger {
 	once.Do(func() {
 		instance = SetupLoggerFile()
@@ -53,6 +58,7 @@ func GetLogger() Logger {
 	return instance
 }
 
+// SetupLoggerFile ...
 func SetupLoggerFile() Logger {
 	fmt.Println("Try newLogger File...")
 
@@ -69,6 +75,7 @@ func SetupLoggerFile() Logger {
 	return log
 }
 
+// InjectCtx ...
 func InjectCtx(parent context.Context, ctx Context) context.Context {
 	if parent == nil {
 		return InjectCtx(context.Background(), ctx)
@@ -77,6 +84,7 @@ func InjectCtx(parent context.Context, ctx Context) context.Context {
 	return context.WithValue(parent, ctxKey, ctx)
 }
 
+// ExtractCtx ...
 func ExtractCtx(ctx context.Context) Context {
 	if ctx == nil {
 		return Context{}

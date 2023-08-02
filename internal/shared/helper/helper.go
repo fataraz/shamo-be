@@ -7,6 +7,7 @@ import (
 
 var emailRegex = regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
 
+// ValidateEmail ...
 func ValidateEmail(email string) bool {
 	return emailRegex.MatchString(email)
 }
@@ -20,6 +21,7 @@ var numberWith08 = regexp.MustCompile(`^((08))\d{8,11}$`)
 // use first character is +62, 10 - 12 digit
 var numberPlus62 = regexp.MustCompile(`^((\+62))\d{10,13}$`)
 
+// ValidatePhoneNumber ...
 func ValidatePhoneNumber(phoneNumber string) (string, error) {
 	if validNumber.MatchString(phoneNumber) {
 		return phoneNumber, nil

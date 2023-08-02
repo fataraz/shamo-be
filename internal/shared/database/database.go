@@ -1,8 +1,7 @@
 package database
 
 import (
-	"log"
-
+	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -13,11 +12,22 @@ type Database struct {
 }
 
 // New init database
-func New() *Database {
-	dsn := "host=localhost user=postgres password=Alesha2021 dbname=shamobe port=5432 sslmode=disable TimeZone=Asia/Jakarta"
+func New(config ConfigDatabase) (*Database, error) {
+	dsn := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%v sslmode=disable search_path=%s",
+		config.Username,
+		config.Password,
+		config.Name,
+		config.Host,
+		config.Port,
+		config.Schema)
+
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf(err.Error())
+		fmt.Println("failed to connect database")
+		return nil, err
 	}
-	return &Database{db}
+
+	s := &Database{db}
+
+	return s, nil
 }

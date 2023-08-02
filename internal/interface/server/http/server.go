@@ -11,9 +11,9 @@ func StartHttpService(cont *container.Container) {
 	server := echo.New()
 	server.HideBanner = true
 
-	setupMiddleware(server)
+	setupMiddleware(server, cont.Config)
 	SetupRouter(server, SetupHandler(cont))
 
 	// Start server http
-	server.Logger.Fatal(server.Start(":1234"))
+	server.Logger.Fatal(server.Start(cont.Config.AppAdress()))
 }

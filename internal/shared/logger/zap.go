@@ -32,6 +32,7 @@ const (
 	FatalLevel
 )
 
+// NewZapLogger ...
 func NewZapLogger(level Level, writers ...io.Writer) (logger *zap.Logger) {
 	zapWriters := make([]zapcore.WriteSyncer, 0)
 	for _, writer := range writers {
@@ -47,6 +48,7 @@ func NewZapLogger(level Level, writers ...io.Writer) (logger *zap.Logger) {
 	return
 }
 
+// getEncoder ...
 func getEncoder() zapcore.Encoder {
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "xtime",
@@ -59,10 +61,12 @@ func getEncoder() zapcore.Encoder {
 	return zapcore.NewJSONEncoder(encoderConfig)
 }
 
+// timeEncoder ...
 func timeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format("2006-01-02 15:04:05.999"))
 }
 
+// millisDurationEncoder ...
 func millisDurationEncoder(d time.Duration, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendInt64(d.Nanoseconds() / 1000000)
 }

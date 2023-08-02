@@ -1,0 +1,20 @@
+{
+  "apps": {
+    "name": "shamo",
+    "version": "1.0.0",
+    "httpPort": 8822
+  },
+  "database": {
+    "db": {
+      "username": "postgres",
+      "password": "Alesha2021",
+      "name": "shamobe",
+      "schema": "public",
+      "host": "localhost",
+      "port": 5432,
+      "minIdleConnections": 10,
+      "maxOpenConnections": 30,
+      "debugMode": false
+    }
+  }
+}

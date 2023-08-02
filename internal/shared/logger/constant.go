@@ -6,9 +6,11 @@ import (
 )
 
 const (
+	// LogTypeSYS ...
 	LogTypeSYS = "SYS"
 )
 
+// separator ...
 const separator = "|"
 
 var (

@@ -30,6 +30,7 @@ var (
 	ErrorPasswordNotMatch = NewError(http.StatusUnauthorized, "Password not match")
 )
 
+// NewError ...
 func NewError(errorCode int, message string) error {
 	return &ApplicationError{
 		Code:    errorCode,
@@ -37,11 +38,13 @@ func NewError(errorCode int, message string) error {
 	}
 }
 
+// ApplicationError ...
 type ApplicationError struct {
 	Code    int
 	Message string
 }
 
+// Error ...
 func (e *ApplicationError) Error() string {
 	return e.Message
 }

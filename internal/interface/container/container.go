@@ -2,6 +2,7 @@ package container
 
 import (
 	"shamo-be/internal/infrastructure/postgres"
+	"shamo-be/internal/shared/config"
 	database "shamo-be/internal/shared/database"
 	authSvc "shamo-be/internal/usecase/auth"
 	productSvc "shamo-be/internal/usecase/product"
@@ -10,6 +11,7 @@ import (
 
 // Container ...
 type Container struct {
+	Config    *config.Config
 	ProducSvc productSvc.Service
 	UserSvc   userSvc.Service
 	AuthSvc   authSvc.Service
@@ -17,7 +19,13 @@ type Container struct {
 
 // Setup ...
 func Setup() *Container {
-	db := database.New()
+	// Construct Config
+	cfg := config.NewConfig("./resources/config.json")
+
+	db, err := database.New(cfg.Database.Db)
+	if err != nil {
+		panic(err)
+	}
 
 	// repository
 	productRepo := postgres.NewProductsRepository(db)
@@ -29,6 +37,7 @@ func Setup() *Container {
 	authSvc := authSvc.New(userRepo)
 
 	return &Container{
+		Config:    cfg,
 		ProducSvc: productSvc,
 		UserSvc:   userSvc,
 		AuthSvc:   authSvc,

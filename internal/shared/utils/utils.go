@@ -7,10 +7,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// GenerateThreadId ...
 func GenerateThreadId() string {
 	return uuid.NewString()
 }
 
+// HashAndSalt ...
 func HashAndSalt(pwd []byte) string {
 	// Use GenerateFromPassword to hash & salt pwd.
 	// MinCost is just an integer constant provided by the bcrypt

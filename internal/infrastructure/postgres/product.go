@@ -2,8 +2,6 @@ package postgres
 
 import (
 	"context"
-	"log"
-
 	productsDomain "shamo-be/internal/domain/products"
 	"shamo-be/internal/shared/database"
 )
@@ -16,7 +14,7 @@ type product struct {
 // NewProductsRepository ...
 func NewProductsRepository(db *database.Database) productsDomain.Repository {
 	if db == nil {
-		log.Fatalf("please provide database client")
+		panic("please provide database client")
 	}
 	return &product{db: db}
 }

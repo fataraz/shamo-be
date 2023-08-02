@@ -4,13 +4,14 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"shamo-be/internal/interface/interceptor"
+	"shamo-be/internal/shared/config"
 	"shamo-be/internal/shared/logger"
 	"shamo-be/internal/shared/utils"
 	"shamo-be/internal/shared/utils/context"
 )
 
 // setupMiddleware ...
-func setupMiddleware(server *echo.Echo) {
+func setupMiddleware(server *echo.Echo, cfg *config.Config) {
 	server.Use(func(h echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			reqId := c.Request().Header.Get(echo.HeaderXRequestID)
@@ -20,9 +21,9 @@ func setupMiddleware(server *echo.Echo) {
 
 			ctxSess := context.New(logger.GetLogger()).
 				SetXRequestID(reqId).
-				SetAppName("shamo-be.API").
-				SetAppVersion("0.0").
-				SetPort(1234).
+				SetAppName(cfg.Apps.Name).
+				SetAppVersion(cfg.Apps.Version).
+				SetPort(cfg.Apps.HttpPort).
 				SetSrcIP(c.RealIP()).
 				SetURL(c.Request().URL.String()).
 				SetMethod(c.Request().Method).
