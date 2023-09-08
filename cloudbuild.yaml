@@ -1,0 +1,53 @@
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/github-access-token/versions/latest
+      env: 'GITHUB_TOKEN'
+    - versionName: projects/$PROJECT_ID/secrets/google_credentials/versions/latest
+      env: 'GOOGLE_CREDENTIALS'
+    - versionName: projects/$PROJECT_ID/secrets/products-service-db-url/versions/latest
+      env: 'DB_URL'
+
+
+# Add enviroment variable to commands
+options:
+  env:
+    - GOPROXY=https://proxy.golang.org # Go Proxy for better perfomance on douwnload packages
+
+substitutions:
+  _IMAGE_NAME: gcr.io/${PROJECT_ID}/${REPO_NAME}
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo $$GOOGLE_CREDENTIALS > cmd/products/gcp.json
+
+        docker build -f deployments/Dockerfile \
+          --build-arg PROJECT_ID=$PROJECT_ID \
+          --build-arg GITHUB_TOKEN=$$GITHUB_TOKEN \
+          --build-arg DB_URL="$$DB_URL" \
+          -t $_IMAGE_NAME:$SHORT_SHA .
+        docker push $_IMAGE_NAME:$SHORT_SHA
+    secretEnv: [
+      'GOOGLE_CREDENTIALS',
+      'GITHUB_TOKEN',
+      'DB_URL',
+    ]
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      [
+        'run',
+        'deploy',
+        'products-service',
+        '--image',
+        '${_IMAGE_NAME}:${SHORT_SHA}',
+        '--region',
+        'us-east1',
+        '--platform',
+        'managed',
+        '--allow-unauthenticated',
+        '--port=8014',
+      ]
